@@ -1,8 +1,7 @@
 enum ProposalStatus {
+  CREATED,
   QUEUED,
-  IN_PROGRESS,
   EXECUTED,
-  DEFEATED,
   CANCELLED,
 }
 

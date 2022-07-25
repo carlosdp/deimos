@@ -67,7 +67,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
   proposal.endBlock = event.params.endBlock;
   proposal.description = event.params.description;
 
-  proposal.status = 'IN_PROGRESS';
+  proposal.status = 'CREATED';
   proposal.votesForCount = BigInt.zero();
   proposal.votesAgainstCount = BigInt.zero();
 
