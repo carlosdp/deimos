@@ -1,0 +1,77 @@
+enum ProposalStatus {
+  QUEUED,
+  IN_PROGRESS,
+  EXECUTED,
+  DEFEATED,
+  CANCELLED,
+}
+
+enum ProposalEventType {
+  CREATED,
+  QUEUED,
+  EXECUTED,
+  CANCELLED,
+  VOTE_CAST,
+}
+
+type Account @entity {
+  id: ID!
+
+  proposals: [Proposal!]! @derivedFrom(field: "proposer")
+  votes: [Vote!]! @derivedFrom(field: "voter")
+}
+
+type Proposal @entity {
+  id: ID!
+  proposalId: BigInt! # uint256
+  proposer: Account! # address
+  targets: [String!]! # address[]
+  values: [BigInt!]! # uint256[]
+  signatures: [String!]! # string[]
+  calldatas: [Bytes!]! # bytes[]
+  startBlock: BigInt! # uint256
+  endBlock: BigInt! # uint256
+  description: String! # string
+
+  status: ProposalStatus!
+  votesForCount: BigInt!
+  votesAgainstCount: BigInt!
+
+  votes: [Vote!]! @derivedFrom(field: "proposal")
+  events: [ProposalEvent!]! @derivedFrom(field: "proposal")
+}
+
+type Vote @entity {
+  id: ID!
+  voter: Account! # address
+  proposal: Proposal! # uint256
+
+  support: Boolean!
+  weight: BigInt! # uint256
+  reason: String! # string
+}
+
+type ProposalEvent @entity {
+  id: ID!
+  type: ProposalEventType!
+  proposal: Proposal! # uint256
+
+  eta: BigInt # uint256
+
+  voter: Account # address
+  support: Int # uint8
+  weight: BigInt # uint256
+  reason: String # string
+}
+
+type QuorumNumeratorUpdated @entity {
+  id: ID!
+  oldQuorumNumerator: BigInt! # uint256
+  newQuorumNumerator: BigInt! # uint256
+}
+
+type TimelockChange @entity {
+  id: ID!
+  oldTimelock: Bytes! # address
+  newTimelock: Bytes! # address
+}
