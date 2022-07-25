@@ -37,6 +37,7 @@ function getProposal(proposalId: BigInt): Proposal {
 export function handleProposalCanceled(event: ProposalCanceledEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'CANCELLED';
+  entity.from = getAccount(event.transaction.from).id;
   entity.proposal = event.params.proposalId.toString();
   entity.save();
 
@@ -51,6 +52,7 @@ export function handleProposalCanceled(event: ProposalCanceledEvent): void {
 export function handleProposalCreated(event: ProposalCreatedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'CREATED';
+  entity.from = getAccount(event.transaction.from).id;
   entity.proposal = event.params.proposalId.toString();
   entity.save();
 
@@ -75,6 +77,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
 export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'EXECUTED';
+  entity.from = getAccount(event.transaction.from).id;
   entity.proposal = event.params.proposalId.toString();
   entity.save();
 
@@ -89,6 +92,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 export function handleProposalQueued(event: ProposalQueuedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'QUEUED';
+  entity.from = getAccount(event.transaction.from).id;
   entity.proposal = event.params.proposalId.toString();
   entity.eta = event.params.eta;
   entity.save();
@@ -118,6 +122,7 @@ export function handleTimelockChange(event: TimelockChangeEvent): void {
 export function handleVoteCast(event: VoteCastEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'VOTE_CAST';
+  entity.from = getAccount(event.transaction.from).id;
   const voterAccount = getAccount(event.params.voter);
   entity.voter = voterAccount.id;
   entity.proposal = event.params.proposalId.toString();

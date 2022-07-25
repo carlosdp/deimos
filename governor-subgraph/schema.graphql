@@ -55,6 +55,7 @@ type ProposalEvent @entity {
   id: ID!
   type: ProposalEventType!
   proposal: Proposal! # uint256
+  from: Account!
 
   eta: BigInt # uint256
 
