@@ -24,10 +24,10 @@ function getAccount(address: Address): Account {
 
 // eslint-disable-next-line
 function getProposal(proposalId: BigInt): Proposal {
-  let proposal = Proposal.load(proposalId.toString());
+  let proposal = Proposal.load(proposalId.toHexString());
 
   if (!proposal) {
-    proposal = new Proposal(proposalId.toString());
+    proposal = new Proposal(proposalId.toHexString());
     proposal.save();
   }
 
@@ -38,7 +38,7 @@ export function handleProposalCanceled(event: ProposalCanceledEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'CANCELLED';
   entity.from = getAccount(event.transaction.from).id;
-  entity.proposal = event.params.proposalId.toString();
+  entity.proposal = event.params.proposalId.toHexString();
   entity.save();
 
   const proposal = getProposal(event.params.proposalId);
@@ -53,10 +53,10 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'CREATED';
   entity.from = getAccount(event.transaction.from).id;
-  entity.proposal = event.params.proposalId.toString();
+  entity.proposal = event.params.proposalId.toHexString();
   entity.save();
 
-  const proposal = new Proposal(event.params.proposalId.toString());
+  const proposal = new Proposal(event.params.proposalId.toHexString());
   proposal.proposalId = event.params.proposalId;
   proposal.proposer = getAccount(event.params.proposer).id;
   proposal.targets = event.params.targets.map<string>(t => t.toHex());
@@ -78,10 +78,10 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'EXECUTED';
   entity.from = getAccount(event.transaction.from).id;
-  entity.proposal = event.params.proposalId.toString();
+  entity.proposal = event.params.proposalId.toHexString();
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toString());
+  const proposal = Proposal.load(event.params.proposalId.toHexString());
 
   if (proposal) {
     proposal.status = 'EXECUTED';
@@ -93,11 +93,11 @@ export function handleProposalQueued(event: ProposalQueuedEvent): void {
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'QUEUED';
   entity.from = getAccount(event.transaction.from).id;
-  entity.proposal = event.params.proposalId.toString();
+  entity.proposal = event.params.proposalId.toHexString();
   entity.eta = event.params.eta;
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toString());
+  const proposal = Proposal.load(event.params.proposalId.toHexString());
 
   if (proposal) {
     proposal.status = 'QUEUED';
@@ -125,13 +125,13 @@ export function handleVoteCast(event: VoteCastEvent): void {
   entity.from = getAccount(event.transaction.from).id;
   const voterAccount = getAccount(event.params.voter);
   entity.voter = voterAccount.id;
-  entity.proposal = event.params.proposalId.toString();
+  entity.proposal = event.params.proposalId.toHexString();
   entity.support = event.params.support;
   entity.weight = event.params.weight;
   entity.reason = event.params.reason;
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toString());
+  const proposal = Proposal.load(event.params.proposalId.toHexString());
 
   if (proposal) {
     if (entity.support) {
@@ -144,7 +144,7 @@ export function handleVoteCast(event: VoteCastEvent): void {
 
     const vote = new Vote(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
     vote.voter = voterAccount.id;
-    vote.proposal = event.params.proposalId.toString();
+    vote.proposal = event.params.proposalId.toHexString();
     vote.support = event.params.support === 1;
     vote.weight = event.params.weight;
     vote.reason = event.params.reason;
