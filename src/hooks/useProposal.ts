@@ -20,6 +20,7 @@ const querySubgraph = (query: string, variables: Record<string, any>) => {
 export type ProposalDetails = {
   id: string;
   description: string;
+  proposer: { id: string };
   status: ProposalStatus;
   createdAt: moment.Moment;
 };
@@ -38,6 +39,9 @@ export function useProposal(id: string) {
             proposal(id: $id) {
               id
               description
+              proposer {
+                id
+              }
               status
               createdAt
             }
@@ -49,7 +53,9 @@ export function useProposal(id: string) {
         const body = await res.json();
         const newProposal = body.data.proposal;
 
-        setProposal(newProposal ?? { ...newProposal, createdAt: moment.unix(Number.parseInt(newProposal.createdAt)) });
+        setProposal(
+          newProposal ? { ...newProposal, createdAt: moment.unix(Number.parseInt(newProposal.createdAt)) } : null
+        );
       } finally {
         setLoading(false);
       }
