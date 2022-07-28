@@ -10,7 +10,7 @@ export type ProposalDetailsProps = {
 export function ProposalDetails({ id }: ProposalDetailsProps) {
   const { proposal, loading } = useProposal(id);
 
-  if (loading) {
+  if (loading || !proposal) {
     return <Spinner />;
   }
 

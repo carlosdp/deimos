@@ -5,5 +5,5 @@ import { ProposalDetails } from '../components/ProposalDetails';
 export function Proposal() {
   const { id } = useParams<{ id: string }>();
 
-  return <ProposalDetails id={id} />;
+  return <ProposalDetails id={id!} />;
 }
