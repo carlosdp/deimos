@@ -1,4 +1,4 @@
-import { Badge, Box, LinkBox, LinkOverlay, Spinner } from '@chakra-ui/react';
+import { Badge, Box, LinkBox, LinkOverlay, Spinner, Text } from '@chakra-ui/react';
 import { useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,9 @@ export function ProposalList() {
       {proposals.map(proposal => (
         <LinkBox
           key={proposal.id}
+          flexDirection="column"
+          gap="12px"
+          display="flex"
           padding="16px"
           fontWeight="bold"
           borderWidth="1px"
@@ -64,6 +67,9 @@ export function ProposalList() {
               </Badge>
             </Box>
           </LinkOverlay>
+          <Text fontSize="14px" fontWeight="normal">
+            Proposed on {proposal.createdAt.format('MMMM DD, YYYY')}
+          </Text>
         </LinkBox>
       ))}
     </Box>

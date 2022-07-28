@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useProvider } from 'wagmi';
 
@@ -11,7 +12,7 @@ const multicallAddress = '0xeefba1e63905ef1d7acba5a8513c70307c1ce441';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const querySubgraph = (query: string, variables: Record<string, any>) => {
-  return fetch('https://api.studio.thegraph.com/query/344/ens-governance/v0.1.2', {
+  return fetch('https://api.studio.thegraph.com/query/344/ens-governance/v0.1.3', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,6 +49,7 @@ export type Proposal = {
   id: string;
   description: string;
   status: ProposalStatus;
+  createdAt: moment.Moment;
 };
 
 export function useProposals() {
@@ -65,6 +67,7 @@ export function useProposals() {
             proposals(first: 100, orderBy: startBlock, orderDirection: desc) {
               id
               description
+              createdAt
             }
           }
         `,
@@ -88,6 +91,9 @@ export function useProposals() {
 
         const hydratedProposals = retrievedProposals.map((proposal: Proposal, i: number) => ({
           ...proposal,
+          // @ts-ignore
+          // note(carlos): just to reduce code, so we don't need to make another type
+          createdAt: moment.unix(Number.parseInt(proposal.createdAt)),
           status: uintToProposalStatus(governorInterface.decodeFunctionResult('state', functionResults[i])[0]),
         }));
 
