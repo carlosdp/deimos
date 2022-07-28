@@ -48,6 +48,7 @@ const uintToProposalStatus = (n: number): ProposalStatus => {
 export type Proposal = {
   id: string;
   description: string;
+  proposer: { id: string };
   status: ProposalStatus;
   createdAt: moment.Moment;
 };
@@ -67,6 +68,9 @@ export function useProposals() {
             proposals(first: 100, orderBy: startBlock, orderDirection: desc) {
               id
               description
+              proposer {
+                id
+              }
               createdAt
             }
           }

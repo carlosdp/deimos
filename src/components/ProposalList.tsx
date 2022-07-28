@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { useNavigate } from 'react-router-dom';
 
 import { ProposalStatus, useProposals } from '../hooks';
+import { AvatarAndName } from './AvatarAndName';
 
 const colorForStatus = (status: ProposalStatus) => {
   switch (status) {
@@ -67,9 +68,12 @@ export function ProposalList() {
               </Badge>
             </Box>
           </LinkOverlay>
-          <Text fontSize="14px" fontWeight="normal">
-            Proposed on {proposal.createdAt.format('MMMM DD, YYYY')}
-          </Text>
+          <Box gap="0.5em" display="flex">
+            <Text fontSize="14px" fontWeight="normal">
+              Proposed on {proposal.createdAt.format('MMMM DD, YYYY')} by
+            </Text>
+            <AvatarAndName size="14px" address={proposal.proposer.id} />
+          </Box>
         </LinkBox>
       ))}
     </Box>
