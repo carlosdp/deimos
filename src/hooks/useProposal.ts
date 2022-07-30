@@ -23,6 +23,8 @@ export type ProposalDetails = {
   proposer: { id: string };
   status: ProposalStatus;
   createdAt: moment.Moment;
+  votesForCount: string;
+  votesAgainstCount: string;
 };
 
 export function useProposal(id: string) {
@@ -44,6 +46,8 @@ export function useProposal(id: string) {
               }
               status
               createdAt
+              votesForCount
+              votesAgainstCount
             }
           }
         `,
