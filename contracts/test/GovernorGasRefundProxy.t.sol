@@ -80,4 +80,27 @@ contract GovernorGasRefundProxyTest is Test {
       require(governor.hasVoted(testProposalId, senderAddress), "vote not counted");
       require(voteCount > 0, "vote count should be > 0");
     }
+
+    function testRefundsTotalGasCost() public {
+      proxy.fund{value: 0.5 ether}(address(governor));
+
+      (uint8 _v, bytes32 _r, bytes32 _s) = vm.sign(senderPrivateKey, _hashTypedDataV4(keccak256(abi.encode(BALLOT_TYPEHASH, testProposalId, uint8(1)))));
+
+      uint256 balanceBefore = senderAddress.balance;
+      uint256 gasLeftBeforeCall = gasleft();
+
+      proxy.castVoteBySig(address(governor), testProposalId, 1, _v, _r, _s);
+
+      uint256 gasLeftAfterCall = gasleft();
+      uint256 totalGasUsed = gasLeftBeforeCall - gasLeftAfterCall - 8109;
+      uint256 balanceAfter = senderAddress.balance;
+      uint256 refund = balanceAfter - balanceBefore;
+      uint256 totalGasCost = totalGasUsed * tx.gasprice;
+
+      // whole gas cost must be refunded
+      require(refund >= totalGasCost, "gas refund less than gas spent");
+
+      // gas refund shouldn't exceed approx +10% of total actual gas cost
+      require(refund <= totalGasCost + (totalGasCost/10), "gas refund greater than +10% total gas");
+    }
 }
