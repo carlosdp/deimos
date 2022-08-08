@@ -82,8 +82,39 @@ contract GovernorGasRefundProxyTest is Test {
     }
 
     function testRefundsTotalGasCost() public {
+      vm.fee(tx.gasprice);
       proxy.fund{value: 0.5 ether}(address(governor));
 
+      (uint256 totalGasCost, uint256 refund) = _measureCastVoteGas();
+
+      // whole gas cost must be refunded
+      require(refund >= totalGasCost, "gas refund less than gas spent");
+
+      // gas refund shouldn't exceed approx +10% of total actual gas cost
+      require(refund <= totalGasCost + (totalGasCost/10), "gas refund greater than +10% total gas");
+    }
+
+    function testRefundsIfPriorityFeeBelow10PercentOfBaseFee() public {
+      vm.fee((tx.gasprice/100)*91);
+      proxy.fund{value: 0.5 ether}(address(governor));
+
+      (uint256 totalGasCost, uint256 refund) = _measureCastVoteGas();
+
+      // whole gas cost must be refunded
+      require(refund >= totalGasCost, "gas refund less than gas spent");
+    }
+
+    function testDoesNotRefundIfPriorityFeeAbove10PercentOfBaseFee() public {
+      vm.fee((tx.gasprice/10)*8);
+      proxy.fund{value: 0.5 ether}(address(governor));
+
+      (, uint256 refund) = _measureCastVoteGas();
+
+      // no gas should be refunded
+      require(refund == 0, "gas refund should be 0");
+    }
+
+    function _measureCastVoteGas() internal returns (uint256 totalGasCost, uint256 refund) {
       (uint8 _v, bytes32 _r, bytes32 _s) = vm.sign(senderPrivateKey, _hashTypedDataV4(keccak256(abi.encode(BALLOT_TYPEHASH, testProposalId, uint8(1)))));
 
       uint256 balanceBefore = senderAddress.balance;
@@ -94,13 +125,7 @@ contract GovernorGasRefundProxyTest is Test {
       uint256 gasLeftAfterCall = gasleft();
       uint256 totalGasUsed = gasLeftBeforeCall - gasLeftAfterCall - 8109;
       uint256 balanceAfter = senderAddress.balance;
-      uint256 refund = balanceAfter - balanceBefore;
-      uint256 totalGasCost = totalGasUsed * tx.gasprice;
-
-      // whole gas cost must be refunded
-      require(refund >= totalGasCost, "gas refund less than gas spent");
-
-      // gas refund shouldn't exceed approx +10% of total actual gas cost
-      require(refund <= totalGasCost + (totalGasCost/10), "gas refund greater than +10% total gas");
+      refund = balanceAfter - balanceBefore;
+      totalGasCost = totalGasUsed * tx.gasprice;
     }
 }

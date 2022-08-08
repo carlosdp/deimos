@@ -29,6 +29,13 @@ contract GovernorGasRefundProxy {
 
     require(votes > 0, "voter below minumum votes for refund");
 
+    uint256 priorityFee = tx.gasprice - block.basefee;
+
+    // if priority fee is >10%, we don't refund gas
+    if (priorityFee > block.basefee / 10) {
+      return votes;
+    }
+
     uint256 balance = balances[_target];
 
     emit GovernorGasRefunded(_target, msg.sender, _proposalId);
