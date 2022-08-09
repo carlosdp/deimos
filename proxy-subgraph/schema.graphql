@@ -1,0 +1,34 @@
+type Account @entity {
+  id: ID!
+
+  refundPools: [RefundPool!]! @derivedFrom(field: "owner")
+  refunds: [Refund!]! @derivedFrom(field: "voter")
+}
+
+type Governor @entity {
+  id: ID!
+}
+
+type Proposal @entity {
+  id: ID!
+  governor: Governor!
+
+  refunds: [Refund!]! @derivedFrom(field: "proposal")
+}
+
+type RefundPool @entity {
+  id: ID!
+  governor: Governor!
+  owner: Account!
+  balance: BigInt! # uint256
+  closed: Boolean!
+
+  refunds: [Refund!]! @derivedFrom(field: "pool")
+}
+
+type Refund @entity {
+  id: ID!
+  voter: Account!
+  pool: RefundPool!
+  proposal: Proposal!
+}

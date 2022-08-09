@@ -25,7 +25,8 @@ contract GovernorGasRefundProxy {
 
   event RefundPoolCreated(address indexed governor, uint256 indexed poolId, address indexed owner, uint256 balance);
   event RefundPoolBalanceAdded(address indexed governor, uint256 indexed poolId, uint256 amountAdded);
-  event GovernorGasRefunded(address indexed governor, uint256 indexed poolId, address indexed voter, uint256 proposalId, uint256 amountRefunded);
+  event RefundPoolClosed(address indexed governor, uint256 indexed poolId);
+  event GasRefunded(address indexed governor, uint256 indexed poolId, address indexed voter, uint256 proposalId, uint256 amountRefunded);
 
   function createPool(address _governor, uint256 _maxFeePerGas, uint256 _maxPriorityFeePerGas) public payable returns (uint256) {
     if (msg.value == 0) {
@@ -62,6 +63,8 @@ contract GovernorGasRefundProxy {
     if (!success) {
       revert ClosePoolFailed();
     }
+
+    emit RefundPoolClosed(_governor, _poolId);
   }
 
   function fund(address _governor, uint256 _poolId) public payable {
@@ -121,7 +124,7 @@ contract GovernorGasRefundProxy {
       revert GasRefundFailed();
     }
 
-    emit GovernorGasRefunded(_governor, _poolId, msg.sender, _proposalId, gasCost);
+    emit GasRefunded(_governor, _poolId, msg.sender, _proposalId, gasCost);
 
     return votes;
   }
