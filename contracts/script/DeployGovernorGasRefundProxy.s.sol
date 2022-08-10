@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 
 import "./GovernerGasRefundProxyDeployer.sol";
 
-contract ContractScript is Script {
+contract DeployGovernorGasRefundProxy is Script {
     function setUp() public {}
 
     function run() public {

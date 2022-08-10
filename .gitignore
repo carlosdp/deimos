@@ -89,6 +89,7 @@ dist
 !.yarn/versions
 .pnp.*
 governor-subgraph/.yarn/*
+proxy-subgraph/.yarn/*
 
 # Cypress
 cypress/videos/*

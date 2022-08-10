@@ -4915,7 +4915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.1":
+"chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.1, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -10465,6 +10465,7 @@ __metadata:
     vite: ^2.9.9
     vitest: ^0.12.9
     wagmi: ^0.4
+    wait-port: ^0.3.0
   languageName: unknown
   linkType: soft
 
@@ -11315,6 +11316,19 @@ __metadata:
     ethers: ">=5.5.1"
     react: ">=17.0.0"
   checksum: 03e04fa572bd4c6652a4f1dc9e7590c127b84a5adb8b3b799ab55d5c0e88935f6eb65a89db742f5f831050836b1354a826d449f6a0356ce612716fa00181bea1
+  languageName: node
+  linkType: hard
+
+"wait-port@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "wait-port@npm:0.3.0"
+  dependencies:
+    chalk: ^4.1.2
+    commander: ^9.3.0
+    debug: ^4.3.4
+  bin:
+    wait-port: bin/wait-port.js
+  checksum: 44e467450286b19cc3706ff4c4df6c239cb7c3eb159bf32d6e99f1b751a044f51582eb52d9a0c6cf4014d2cf0938a5ee5a1bef96e0f6840ad9f4e5fc249a6e07
   languageName: node
   linkType: hard
 
