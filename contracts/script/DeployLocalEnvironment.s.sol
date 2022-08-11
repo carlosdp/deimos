@@ -34,14 +34,13 @@ contract DeployLocalEnvironment is Script {
         console.log(msg.sender);
 
         address[] memory _targets = new address[](1);
-        /* _targets[0] = address(1); */
+        _targets[0] = address(1);
         uint256[] memory _values = new uint256[](1);
         bytes[] memory _callDatas = new bytes[](1);
 
         vm.startBroadcast();
-        /* address(governor).call(abi.encodeWithSignature("propose(address[] memory,uint256[] memory,bytes[] memory,string)", _targets, _values, _callDatas, "Test Proposal")); */
-        governor.propose(_targets, _values, _callDatas, "Test Proposal");
         proxy.createPool{value: 0.5 ether}(address(governor), 0, 0);
+        governor.propose(_targets, _values, _callDatas, "Test Proposal");
         vm.stopBroadcast();
     }
 }
