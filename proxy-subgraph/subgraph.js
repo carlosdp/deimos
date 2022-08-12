@@ -9,7 +9,7 @@ module.exports = {
       name: 'GovernorGasRefundProxy',
       network: 'mainnet',
       source: {
-        address: '0xfc58f965d70fe42077e157079020e8e388d31ab5',
+        address: process.env.GOVERNOR_PROXY_ADDRESS,
         abi: 'GovernorGasRefundProxy',
         startBlock: process.env.GOVERNOR_PROXY_START_BLOCK
           ? Number.parseInt(process.env.GOVERNOR_PROXY_START_BLOCK)

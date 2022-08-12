@@ -24,23 +24,18 @@ contract DeployLocalEnvironment is Script {
 
         address deployedAddress = deployer.getDeployed();
         GovernorGasRefundProxy proxy = GovernorGasRefundProxy(deployedAddress);
+        console.log(deployedAddress);
 
         vm.startBroadcast();
-        token.mint();
+        token.mint(1 ether);
         token.delegate(msg.sender);
         vm.stopBroadcast();
 
         console.log(address(this));
         console.log(msg.sender);
 
-        address[] memory _targets = new address[](1);
-        _targets[0] = address(1);
-        uint256[] memory _values = new uint256[](1);
-        bytes[] memory _callDatas = new bytes[](1);
-
         vm.startBroadcast();
         proxy.createPool{value: 0.5 ether}(address(governor), 0, 0);
-        governor.propose(_targets, _values, _callDatas, "Test Proposal");
         vm.stopBroadcast();
     }
 }

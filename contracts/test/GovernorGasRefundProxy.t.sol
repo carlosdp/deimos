@@ -33,7 +33,7 @@ contract GovernorGasRefundProxyTest is Test {
 
       // prank an address with a known private key (so we can sign votes)
       vm.startPrank(senderAddress);
-      _token.mint();
+      _token.mint(1 ether);
       _token.delegate(senderAddress);
       vm.deal(senderAddress, 1 ether);
 
