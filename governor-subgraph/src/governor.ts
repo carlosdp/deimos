@@ -9,7 +9,15 @@ import {
   TimelockChange as TimelockChangeEvent,
   VoteCast as VoteCastEvent,
 } from '../generated/Contract/Contract';
-import { Account, Proposal, ProposalEvent, Vote, QuorumNumeratorUpdated, TimelockChange } from '../generated/schema';
+import {
+  Account,
+  Governor,
+  Proposal,
+  ProposalEvent,
+  Vote,
+  QuorumNumeratorUpdated,
+  TimelockChange,
+} from '../generated/schema';
 
 function getAccount(address: Address): Account {
   let account = Account.load(address.toHex());
@@ -20,6 +28,17 @@ function getAccount(address: Address): Account {
   }
 
   return account;
+}
+
+function getGovernor(address: Address): Governor {
+  let governor = Governor.load(address.toHex());
+
+  if (!governor) {
+    governor = new Governor(address.toHex());
+    governor.save();
+  }
+
+  return governor;
 }
 
 // eslint-disable-next-line
@@ -35,6 +54,7 @@ function getProposal(proposalId: BigInt): Proposal {
 }
 
 export function handleProposalCanceled(event: ProposalCanceledEvent): void {
+  getGovernor(event.address);
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'CANCELLED';
   entity.from = getAccount(event.transaction.from).id;
@@ -60,6 +80,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
 
   const proposal = new Proposal(event.params.proposalId.toHexString());
   proposal.proposalId = event.params.proposalId;
+  proposal.governor = getGovernor(event.address).id;
   proposal.proposer = getAccount(event.params.proposer).id;
   proposal.targets = event.params.targets.map<string>(t => t.toHex());
   proposal.values = event.params.values;
@@ -78,6 +99,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
 }
 
 export function handleProposalExecuted(event: ProposalExecutedEvent): void {
+  getGovernor(event.address);
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'EXECUTED';
   entity.from = getAccount(event.transaction.from).id;
@@ -94,6 +116,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
 }
 
 export function handleProposalQueued(event: ProposalQueuedEvent): void {
+  getGovernor(event.address);
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'QUEUED';
   entity.from = getAccount(event.transaction.from).id;
@@ -111,6 +134,7 @@ export function handleProposalQueued(event: ProposalQueuedEvent): void {
 }
 
 export function handleQuorumNumeratorUpdated(event: QuorumNumeratorUpdatedEvent): void {
+  getGovernor(event.address);
   const entity = new QuorumNumeratorUpdated(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.oldQuorumNumerator = event.params.oldQuorumNumerator;
   entity.newQuorumNumerator = event.params.newQuorumNumerator;
@@ -119,6 +143,7 @@ export function handleQuorumNumeratorUpdated(event: QuorumNumeratorUpdatedEvent)
 }
 
 export function handleTimelockChange(event: TimelockChangeEvent): void {
+  getGovernor(event.address);
   const entity = new TimelockChange(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.oldTimelock = event.params.oldTimelock;
   entity.newTimelock = event.params.newTimelock;
@@ -127,6 +152,7 @@ export function handleTimelockChange(event: TimelockChangeEvent): void {
 }
 
 export function handleVoteCast(event: VoteCastEvent): void {
+  getGovernor(event.address);
   const entity = new ProposalEvent(event.transaction.hash.toHex() + '-' + event.logIndex.toString());
   entity.type = 'VOTE_CAST';
   entity.from = getAccount(event.transaction.from).id;

@@ -20,9 +20,19 @@ type Account @entity {
   votes: [Vote!]! @derivedFrom(field: "voter")
 }
 
+type Governor @entity {
+  id: ID!
+
+  quorumNumerator: BigInt # uint256
+  timelock: Bytes # address
+
+  proposals: [Proposal!]! @derivedFrom(field: "governor")
+}
+
 type Proposal @entity {
   id: ID!
   proposalId: BigInt! # uint256
+  governor: Governor!
   proposer: Account! # address
   targets: [String!]! # address[]
   values: [BigInt!]! # uint256[]

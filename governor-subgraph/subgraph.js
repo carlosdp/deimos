@@ -9,15 +9,22 @@ module.exports = {
       name: 'Governor',
       network: 'mainnet',
       source: {
-        address: process.env.GOVERNOR_ADDRESS ?? '0x323A76393544d5ecca80cd6ef2A560C6a395b7E3',
         abi: 'Governor',
-        startBlock: process.env.GOVERNOR_START_BLOCK ? Number.parseInt(process.env.GOVERNOR_START_BLOCK) : 13_533_772,
+        startBlock: process.env.GOVERNOR_START_BLOCK ? Number.parseInt(process.env.GOVERNOR_START_BLOCK) : 0,
       },
       mapping: {
         kind: 'ethereum/events',
         apiVersion: '0.0.6',
         language: 'wasm/assemblyscript',
-        entities: ['Account', 'Proposal', 'Vote', 'ProposalEvent', 'QuorumNumeratorUpdated', 'TimelockChange'],
+        entities: [
+          'Account',
+          'Governor',
+          'Proposal',
+          'Vote',
+          'ProposalEvent',
+          'QuorumNumeratorUpdated',
+          'TimelockChange',
+        ],
         abis: [
           {
             name: 'Governor',
