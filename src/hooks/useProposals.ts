@@ -5,14 +5,13 @@ import { useProvider } from 'wagmi';
 
 import Multicall from './Multicall.json';
 
-// ENS DAO governor contract
-const governorAddress = '0x323A76393544d5ecca80cd6ef2A560C6a395b7E3';
+const GOVERNOR_SUBGRAPH_URL = 'http://localhost:8000/subgraphs/name/governor';
 const governorABI = ['function state(uint256 proposalId) public view returns (uint8)'];
 const multicallAddress = '0xeefba1e63905ef1d7acba5a8513c70307c1ce441';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const querySubgraph = (query: string, variables: Record<string, any>) => {
-  return fetch('https://api.studio.thegraph.com/query/344/ens-governance/v0.1.3', {
+  return fetch(GOVERNOR_SUBGRAPH_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,13 +46,14 @@ const uintToProposalStatus = (n: number): ProposalStatus => {
 
 export type Proposal = {
   id: string;
+  proposalId: string;
   description: string;
   proposer: { id: string };
   status: ProposalStatus;
   createdAt: moment.Moment;
 };
 
-export function useProposals() {
+export function useProposals(governorId: string) {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
   const provider = useProvider();
@@ -64,9 +64,10 @@ export function useProposals() {
         setLoading(true);
         const res = await querySubgraph(
           `
-          query GetProposals {
-            proposals(first: 100, orderBy: startBlock, orderDirection: desc) {
+          query GetProposals($governorId: String!) {
+            proposals(where: { governor: $governorId }, first: 100, orderBy: startBlock, orderDirection: desc) {
               id
+              proposalId
               description
               proposer {
                 id
@@ -75,7 +76,7 @@ export function useProposals() {
             }
           }
         `,
-          {}
+          { governorId }
         );
 
         const body = await res.json();
@@ -85,8 +86,8 @@ export function useProposals() {
         const governorInterface = new ethers.utils.Interface(governorABI);
 
         const calls = retrievedProposals.map((proposal: Proposal) => ({
-          target: governorAddress,
-          callData: governorInterface.encodeFunctionData('state', [proposal.id]),
+          target: governorId,
+          callData: governorInterface.encodeFunctionData('state', [proposal.proposalId]),
         }));
 
         const multicallResult = await multicall.aggregate(calls);
@@ -106,7 +107,7 @@ export function useProposals() {
         setLoading(false);
       }
     })();
-  }, [provider]);
+  }, [provider, governorId]);
 
   return { proposals, loading };
 }

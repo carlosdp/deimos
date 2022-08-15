@@ -19,6 +19,8 @@ const querySubgraph = (query: string, variables: Record<string, any>) => {
 
 export type ProposalDetails = {
   id: string;
+  governor: { id: string };
+  proposalId: string;
   description: string;
   proposer: { id: string };
   status: ProposalStatus;
@@ -40,10 +42,14 @@ export function useProposal(id: string) {
           query GetProposal($id: String!) {
             proposal(id: $id) {
               id
+              governor {
+                id
+              }
               description
               proposer {
                 id
               }
+              proposalId
               status
               createdAt
               votesForCount

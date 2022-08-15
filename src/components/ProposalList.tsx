@@ -29,15 +29,19 @@ const colorForStatus = (status: ProposalStatus) => {
   }
 };
 
-export function ProposalList() {
-  const { proposals, loading } = useProposals();
+export type ProposalListProps = {
+  governorId: string;
+};
+
+export const ProposalList = ({ governorId }: ProposalListProps) => {
+  const { proposals, loading } = useProposals(governorId);
   const navigate = useNavigate();
 
   const goToProposal = useCallback(
-    (id: string) => {
-      navigate(`/proposals/${id}`);
+    (proposalId: string) => {
+      navigate(`/governors/${governorId}/proposals/${proposalId}`);
     },
-    [navigate]
+    [navigate, governorId]
   );
 
   if (loading) {
@@ -78,4 +82,4 @@ export function ProposalList() {
       ))}
     </Box>
   );
-}
+};

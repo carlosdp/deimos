@@ -1,17 +1,12 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Routes, Route } from 'react-router-dom';
 
-import { ProposalList } from './components/ProposalList';
 import { Proposal } from './screens/Proposal';
+import { Proposals } from './screens/Proposals';
 
 function Home() {
-  return (
-    <Box width="100%" maxWidth="936px">
-      <Heading paddingBottom="20px">Proposals</Heading>
-      <ProposalList />
-    </Box>
-  );
+  return <Box width="100%" maxWidth="936px"></Box>;
 }
 
 function App() {
@@ -27,7 +22,8 @@ function App() {
       </Box>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/proposals/:id" element={<Proposal />} />
+        <Route path="/governors/:id" element={<Proposals />} />
+        <Route path="/governors/:governorId/proposals/:id" element={<Proposal />} />
       </Routes>
     </Box>
   );

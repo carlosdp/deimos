@@ -5,8 +5,8 @@ import { ProposalDetails } from '../components/ProposalDetails';
 import { useProposal } from '../hooks';
 
 export function Proposal() {
-  const { id } = useParams<{ id: string }>();
-  const { proposal, loading } = useProposal(id!);
+  const { governorId, id } = useParams<{ governorId: string; id: string }>();
+  const { proposal, loading } = useProposal(`${governorId}:${id}`);
 
   if (loading || !proposal) {
     return <Spinner />;

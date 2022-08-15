@@ -42,11 +42,12 @@ function getGovernor(address: Address): Governor {
 }
 
 // eslint-disable-next-line
-function getProposal(proposalId: BigInt): Proposal {
-  let proposal = Proposal.load(proposalId.toHexString());
+function getProposal(governorId: Address, proposalId: BigInt): Proposal {
+  const id = `${governorId.toHexString()}:${proposalId.toHexString()}`;
+  let proposal = Proposal.load(id);
 
   if (!proposal) {
-    proposal = new Proposal(proposalId.toHexString());
+    proposal = new Proposal(id);
     proposal.save();
   }
 
@@ -62,7 +63,7 @@ export function handleProposalCanceled(event: ProposalCanceledEvent): void {
   entity.createdAt = event.block.timestamp;
   entity.save();
 
-  const proposal = getProposal(event.params.proposalId);
+  const proposal = getProposal(event.address, event.params.proposalId);
 
   if (proposal) {
     proposal.status = 'CANCELLED';
@@ -78,7 +79,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
   entity.createdAt = event.block.timestamp;
   entity.save();
 
-  const proposal = new Proposal(event.params.proposalId.toHexString());
+  const proposal = new Proposal(`${event.address.toHexString()}:${event.params.proposalId.toHexString()}`);
   proposal.proposalId = event.params.proposalId;
   proposal.governor = getGovernor(event.address).id;
   proposal.proposer = getAccount(event.params.proposer).id;
@@ -107,7 +108,7 @@ export function handleProposalExecuted(event: ProposalExecutedEvent): void {
   entity.createdAt = event.block.timestamp;
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toHexString());
+  const proposal = getProposal(event.address, event.params.proposalId);
 
   if (proposal) {
     proposal.status = 'EXECUTED';
@@ -125,7 +126,7 @@ export function handleProposalQueued(event: ProposalQueuedEvent): void {
   entity.createdAt = event.block.timestamp;
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toHexString());
+  const proposal = getProposal(event.address, event.params.proposalId);
 
   if (proposal) {
     proposal.status = 'QUEUED';
@@ -165,7 +166,7 @@ export function handleVoteCast(event: VoteCastEvent): void {
   entity.createdAt = event.block.timestamp;
   entity.save();
 
-  const proposal = Proposal.load(event.params.proposalId.toHexString());
+  const proposal = getProposal(event.address, event.params.proposalId);
 
   if (proposal) {
     if (entity.support) {
