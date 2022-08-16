@@ -13,7 +13,7 @@ export function Proposal() {
   }
 
   return (
-    <Box maxWidth="936px">
+    <Box width="100%" maxWidth="936px">
       <ProposalDetails proposal={proposal} />
     </Box>
   );

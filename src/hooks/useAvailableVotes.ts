@@ -28,12 +28,12 @@ export const useAvailableVotes = (contractId: string, proposalId: string): Avail
   const { data: votes, isLoading: votesLoading } = useContractRead(
     { addressOrName: contractId, contractInterface: governorABI },
     'getVotes',
-    { args: [account, snapshot], enabled: !!account && !!snapshot }
+    { args: [account?.address, snapshot], enabled: !!account && !!snapshot }
   );
   const { data: hasVoted, isLoading: hasVotedLoading } = useContractRead(
     { addressOrName: contractId, contractInterface: governorABI },
     'hasVoted',
-    { args: [proposalId, account], enabled: !!account }
+    { args: [proposalId, account?.address], enabled: !!account }
   );
   const { data: state, isLoading: stateLoading } = useContractRead(
     { addressOrName: contractId, contractInterface: governorABI },
@@ -43,8 +43,8 @@ export const useAvailableVotes = (contractId: string, proposalId: string): Avail
 
   return {
     loading: snapshotLoading || votesLoading || hasVotedLoading || stateLoading,
-    active: !!state && state[0] === 1,
-    hasVoted: hasVoted && hasVoted[0],
-    votes: votes && votes[0],
+    active: (state as number | undefined) === 1,
+    hasVoted: (hasVoted as boolean | undefined) === true,
+    votes: (votes as ethers.BigNumber | undefined) || ethers.BigNumber.from(0),
   };
 };

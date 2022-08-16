@@ -14,7 +14,7 @@ export function AvatarAndName({ address, size }: AvatarAndNameProps) {
     <Box alignItems="center" gap="0.2em" display="flex">
       <Avatar width={size} height={size} src={avatar ?? undefined} />
       <Text fontSize={size} fontWeight="normal">
-        {name ?? `${address.slice(0, 4)}..${address.slice(-4)}`}
+        {name ?? `${address.slice(0, 5)}..${address.slice(-4)}`}
       </Text>
     </Box>
   );

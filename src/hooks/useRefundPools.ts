@@ -41,10 +41,10 @@ export const useRefundPools = (governorId: string) => {
           throw new Error('refund pool request failed');
         }
 
-        const data = await res.json();
+        const resData = await res.json();
 
         setRefundPools(
-          data.refundPools.map((pool: { id: string; balance: string }) => ({
+          resData.data.refundPools.map((pool: { id: string; balance: string }) => ({
             id: pool.id,
             balance: ethers.BigNumber.from(pool.balance),
           }))

@@ -15,7 +15,7 @@ export function ProposalDetails({ proposal }: ProposalDetailsProps) {
       <Box flexDirection="column" flex="1" display="flex">
         <VotingCard proposal={proposal} />
       </Box>
-      <Box flexDirection="column" flex="3" display="flex">
+      <Box flexDirection="column" flex="3" display="flex" minWidth="500px">
         <Box gap="0.5em" display="flex">
           <Text fontSize="14px" fontWeight="normal">
             Proposed on {proposal.createdAt.format('MMMM DD, YYYY')} by

@@ -64,7 +64,7 @@ export const ProposalList = ({ governorId }: ProposalListProps) => {
           borderRadius="4px"
           cursor="pointer"
         >
-          <LinkOverlay onClick={() => goToProposal(proposal.id)}>
+          <LinkOverlay onClick={() => goToProposal(proposal.proposalId.toHexString())}>
             <Box justifyContent="space-between" display="flex">
               <ReactMarkdown>{proposal.description.split('\n')[0]}</ReactMarkdown>
               <Badge alignItems="center" display="flex" colorScheme={colorForStatus(proposal.status)}>

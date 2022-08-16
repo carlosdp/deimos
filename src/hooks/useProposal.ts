@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 
 import { ProposalStatus } from './useProposals';
 
+const GOVERNOR_SUBGRAPH_URL = 'http://localhost:8000/subgraphs/name/governor';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const querySubgraph = (query: string, variables: Record<string, any>) => {
-  return fetch('https://api.studio.thegraph.com/query/344/ens-governance/v0.1.3', {
+  return fetch(GOVERNOR_SUBGRAPH_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

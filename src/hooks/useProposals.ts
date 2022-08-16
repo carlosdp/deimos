@@ -7,7 +7,9 @@ import Multicall from './Multicall.json';
 
 const GOVERNOR_SUBGRAPH_URL = 'http://localhost:8000/subgraphs/name/governor';
 const governorABI = ['function state(uint256 proposalId) public view returns (uint8)'];
-const multicallAddress = '0xeefba1e63905ef1d7acba5a8513c70307c1ce441';
+const multicallAddress = import.meta.env.DEV
+  ? '0x0165878a594ca255338adfa4d48449f69242eb8f'
+  : '0xeefba1e63905ef1d7acba5a8513c70307c1ce441';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const querySubgraph = (query: string, variables: Record<string, any>) => {
@@ -46,7 +48,7 @@ const uintToProposalStatus = (n: number): ProposalStatus => {
 
 export type Proposal = {
   id: string;
-  proposalId: string;
+  proposalId: ethers.BigNumber;
   description: string;
   proposer: { id: string };
   status: ProposalStatus;
@@ -96,6 +98,7 @@ export function useProposals(governorId: string) {
 
         const hydratedProposals = retrievedProposals.map((proposal: Proposal, i: number) => ({
           ...proposal,
+          proposalId: ethers.BigNumber.from(proposal.proposalId),
           // @ts-ignore
           // note(carlos): just to reduce code, so we don't need to make another type
           createdAt: moment.unix(Number.parseInt(proposal.createdAt)),

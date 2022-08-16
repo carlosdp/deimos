@@ -32,27 +32,41 @@ export const VotingCard = ({ proposal }: VotingCardProps) => {
   );
 
   return (
-    <Box padding="20px" borderWidth="1px" borderStyle="solid" borderColor="black" borderRadius="4px">
-      <Box gap="16px" display="flex">
-        <Text fontWeight="bold">For</Text>
-        <Text>{votesFor}</Text>
+    <Box
+      flexDirection="column"
+      gap="12px"
+      display="flex"
+      padding="20px"
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor="black"
+      borderRadius="4px"
+    >
+      <Box flexDirection="column" gap="6px" display="flex">
+        <Box gap="16px" display="flex">
+          <Text fontWeight="bold">For</Text>
+          <Text>{votesFor}</Text>
+        </Box>
+        <Box gap="16px" display="flex">
+          <Text fontWeight="bold">Against</Text>
+          <Text>{votesAgainst}</Text>
+        </Box>
       </Box>
-      <Box gap="16px" display="flex">
-        <Text fontWeight="bold">Against</Text>
-        <Text>{votesAgainst}</Text>
-      </Box>
-      <Box display="flex">
+      <Box flexDirection="column" gap="6px" display="flex">
+        <Text fontWeight="bold">Vote</Text>
         {availableVotesLoading ? (
           <Spinner />
+        ) : votes.isZero() ? (
+          <Text>You do not have any votes in this organization</Text>
         ) : !active ? (
           <Text>Voting not active</Text>
         ) : hasVoted ? (
           <Text>You already voted on this proposal</Text>
         ) : (
-          <>
-            <Button onClick={voteFor}>{`Cast ${votes} For`}</Button>
-            <Button onClick={voteAgainst}>{`Cast ${votes} Against`}</Button>
-          </>
+          <Box gap="12px" display="flex">
+            <Button onClick={voteFor}>Yes</Button>
+            <Button onClick={voteAgainst}>No</Button>
+          </Box>
         )}
       </Box>
     </Box>

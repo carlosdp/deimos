@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
+import "multicall/Multicall.sol";
 
 import "../src/GovernorGasRefundProxy.sol";
 import "../src/utils/TestToken.sol";
@@ -20,22 +21,23 @@ contract DeployLocalEnvironment is Script {
         TestGovernor governor = new TestGovernor(token);
         vm.stopBroadcast();
 
-        console.log(address(governor));
 
         address deployedAddress = deployer.getDeployed();
         GovernorGasRefundProxy proxy = GovernorGasRefundProxy(deployedAddress);
-        console.log(deployedAddress);
 
         vm.startBroadcast();
         token.mint(1 ether);
         token.delegate(msg.sender);
         vm.stopBroadcast();
 
-        console.log(address(this));
-        console.log(msg.sender);
-
         vm.startBroadcast();
+        Multicall multicall = new Multicall();
         proxy.createPool{value: 0.5 ether}(address(governor), 0, 0);
         vm.stopBroadcast();
+
+        console.log("Governor: %s", address(governor));
+        console.log("GasRefundProxy: %s", deployedAddress);
+        console.log("Multicall: %s", address(multicall));
+        console.log("Token: %s", address(token));
     }
 }
