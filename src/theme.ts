@@ -56,9 +56,14 @@ export const theme = extendTheme(
     config: {
       initialColorMode: 'system',
     },
+    colors: {
+      brand: {
+        500: 'rgb(54, 196, 128)',
+      },
+    },
     components: {
       ...markdownComponents,
     },
   },
-  withDefaultColorScheme({ colorScheme: 'blue' })
+  withDefaultColorScheme({ colorScheme: 'brand' })
 );
