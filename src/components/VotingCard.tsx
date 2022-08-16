@@ -10,7 +10,7 @@ export type VotingCardProps = {
 };
 
 export const VotingCard = ({ proposal }: VotingCardProps) => {
-  const { vote } = useSubmitVote(proposal.governor.id, proposal.id);
+  const { vote, refundAvailable } = useSubmitVote(proposal.governor.id, proposal.id);
   const {
     votes,
     hasVoted,
@@ -68,6 +68,7 @@ export const VotingCard = ({ proposal }: VotingCardProps) => {
             <Button onClick={voteAgainst}>No</Button>
           </Box>
         )}
+        {refundAvailable && <Text>Gas is Free!</Text>}
       </Box>
     </Box>
   );

@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useSigner } from 'wagmi';
 
+import { useAsyncMemo } from './useAsyncMemo';
 import { useRefundPools } from './useRefundPools';
 
 const DEFAULT_CHAIN_ID = process.env.NODE_ENV === 'development' ? 31_337 : 1;
@@ -32,11 +33,29 @@ const governorProxyABI = [
   'function castVoteBySig(address governor, uint256 poolId, uint256 proposalId, uint8 support, uint8 v, bytes32 r, bytes32 s)',
 ];
 
+const estimateGasForRefundedVote = async (provider: ethers.Signer) => {
+  const REFUND_GAS_ESTIMATE = 168_000;
+  const gasPrice = await provider.getGasPrice();
+
+  return gasPrice.mul(REFUND_GAS_ESTIMATE);
+};
+
 export const useSubmitVote = (contractId: string, proposalId: string, chainId = DEFAULT_CHAIN_ID) => {
   const { data: signer } = useSigner();
   const { refundPools, loading: refundPoolsLoading } = useRefundPools(contractId);
   // todo: make actually robust
-  const viableRefundPool = useMemo(() => refundPools[0] ?? null, [refundPools]);
+  const viableRefundPool = useAsyncMemo(async () => {
+    if (signer) {
+      const estimatedCost = await estimateGasForRefundedVote(signer);
+      const viablePools = refundPools
+        .filter(pool => pool.balance.gte(estimatedCost))
+        .sort(_ => (Math.random() < 0.5 ? -1 : 1));
+
+      return viablePools[0] ?? null;
+    } else {
+      return null;
+    }
+  }, [refundPools, signer]);
 
   const vote = useCallback(
     async (support: number) => {
