@@ -1,4 +1,4 @@
-import { Avatar, Box, Text } from '@chakra-ui/react';
+import { Avatar, Box, Text, Link } from '@chakra-ui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Routes, Route } from 'react-router-dom';
 
@@ -18,9 +18,9 @@ function App() {
           <Box alignItems="center" gap="12px" display="flex">
             <Avatar width="36px" height="36px" src={avatar} />
             <Box flexDirection="column" display="flex">
-              <Text as="span" fontSize="18px" fontWeight="bold">
+              <Link fontSize="18px" fontWeight="bold" _hover={{ textDecoration: 'none' }} href="/">
                 Decisions
-              </Text>
+              </Link>
               <Text as="span" fontSize="8px">
                 a carlosdp.eth project
               </Text>

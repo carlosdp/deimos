@@ -1,6 +1,7 @@
 import { Box, Spinner } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 
+import { ProposalBreadcrumbs } from '../components/ProposalBreadcrumbs';
 import { ProposalDetails } from '../components/ProposalDetails';
 import { useProposal } from '../hooks';
 
@@ -14,6 +15,7 @@ export function Proposal() {
 
   return (
     <Box width="100%" maxWidth="936px">
+      <ProposalBreadcrumbs proposal={proposal} />
       <ProposalDetails proposal={proposal} />
     </Box>
   );

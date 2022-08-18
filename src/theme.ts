@@ -56,13 +56,37 @@ export const theme = extendTheme(
     config: {
       initialColorMode: 'system',
     },
+    styles: {
+      global: {
+        body: {
+          background: 'rgb(250, 250, 252)',
+        },
+      },
+    },
     colors: {
       brand: {
-        500: 'rgb(54, 196, 128)',
+        '50': '#EBF9F3',
+        '100': '#C7F0DC',
+        '200': '#A3E6C6',
+        '300': '#7FDCAF',
+        '400': '#5BD299',
+        '500': '#37C883',
+        '600': '#2CA068',
+        '700': '#21784E',
+        '800': '#165034',
+        '900': '#0B281A',
       },
     },
     components: {
       ...markdownComponents,
+      Box: {
+        variants: {
+          card: {
+            boxShadow: '0 2px 2px rgba(0,0,0,0.1)',
+            borderRadius: '24px',
+          },
+        },
+      },
     },
   },
   withDefaultColorScheme({ colorScheme: 'brand' })

@@ -1,9 +1,53 @@
-import { Box, Text, Button, Spinner } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Button,
+  Spinner,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+} from '@chakra-ui/react';
+import { faThumbsUp, faThumbsDown, faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ethers } from 'ethers';
 import { useCallback } from 'react';
 
 import { ProposalDetails, useSubmitVote, useAvailableVotes } from '../hooks';
 import { voteCountFormatter } from '../utils';
+import { Card } from './Card';
+import { Stat } from './Stat';
+
+const RefundExplanationPopover = () => {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <FontAwesomeIcon icon={faInfoCircle} cursor="pointer" color="rgb(1,1,1,0.2)" />
+      </PopoverTrigger>
+      <PopoverContent
+        color="white"
+        fontSize="16px"
+        background="brand.500"
+        _focus={{ boxShadow: 'none' }}
+        _focusVisible={{ outline: 'none' }}
+      >
+        <PopoverHeader paddingTop="24px" fontWeight="bold" border="0">
+          Instant Gas Refund
+        </PopoverHeader>
+        <PopoverArrow backgroundColor="brand.500" />
+        <PopoverCloseButton />
+        <PopoverBody paddingBottom="24px">
+          <Text>
+            The transaction gas you spend on this vote will be automatically refunded to you in the same transaction.
+          </Text>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 export type VotingCardProps = {
   proposal: ProposalDetails;
@@ -32,27 +76,12 @@ export const VotingCard = ({ proposal }: VotingCardProps) => {
   );
 
   return (
-    <Box
-      flexDirection="column"
-      gap="12px"
-      display="flex"
-      padding="20px"
-      borderWidth="1px"
-      borderStyle="solid"
-      borderColor="black"
-      borderRadius="4px"
-    >
-      <Box flexDirection="column" gap="6px" display="flex">
-        <Box gap="16px" display="flex">
-          <Text fontWeight="bold">For</Text>
-          <Text>{votesFor}</Text>
-        </Box>
-        <Box gap="16px" display="flex">
-          <Text fontWeight="bold">Against</Text>
-          <Text>{votesAgainst}</Text>
-        </Box>
+    <Card flexDirection="column" gap="12px" display="flex" alignItems="center">
+      <Box alignItems="center" justifyContent="space-around" display="flex" width="100%">
+        <Stat label="For" figure={votesFor} />
+        <Stat label="Against" figure={votesAgainst} />
       </Box>
-      <Box flexDirection="column" gap="6px" display="flex">
+      <Box flexDirection="column" gap="12px" display="flex">
         <Text fontWeight="bold">Vote</Text>
         {availableVotesLoading ? (
           <Spinner />
@@ -63,13 +92,22 @@ export const VotingCard = ({ proposal }: VotingCardProps) => {
         ) : hasVoted ? (
           <Text>You already voted on this proposal</Text>
         ) : (
-          <Box gap="12px" display="flex">
-            <Button onClick={voteFor}>Yes</Button>
-            <Button onClick={voteAgainst}>No</Button>
+          <Box alignItems="center" gap="12px" display="flex">
+            <Button onClick={voteFor}>
+              <FontAwesomeIcon icon={faThumbsUp} />
+            </Button>
+            <Button onClick={voteAgainst}>
+              <FontAwesomeIcon icon={faThumbsDown} />
+            </Button>
           </Box>
         )}
-        {refundAvailable && <Text>Gas is Free!</Text>}
+        {refundAvailable && (
+          <Text alignItems="center" gap="8px" display="flex" fontSize="14px">
+            <FontAwesomeIcon icon={faCheckCircle} color="rgb(0,200,0)" /> Instant Gas Refund
+            <RefundExplanationPopover />
+          </Text>
+        )}
       </Box>
-    </Box>
+    </Card>
   );
 };
