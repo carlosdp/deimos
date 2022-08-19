@@ -23,7 +23,7 @@ contract GovernorGasRefundProxy {
 
   uint256 constant REFUND_GAS_OVERHEAD = 3900;
 
-  event RefundPoolCreated(address indexed governor, uint256 indexed poolId, address indexed owner, uint256 balance);
+  event RefundPoolCreated(address indexed governor, uint256 indexed poolId, address indexed owner, uint256 balance, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas);
   event RefundPoolBalanceAdded(address indexed governor, uint256 indexed poolId, uint256 amountAdded);
   event RefundPoolClosed(address indexed governor, uint256 indexed poolId);
   event GasRefunded(address indexed governor, uint256 indexed poolId, address indexed voter, uint256 proposalId, uint256 amountRefunded);
@@ -43,7 +43,7 @@ contract GovernorGasRefundProxy {
 
     refundPools[_governor][poolId] = pool;
 
-    emit RefundPoolCreated(_governor, poolId, msg.sender, pool.balance);
+    emit RefundPoolCreated(_governor, poolId, msg.sender, pool.balance, _maxFeePerGas, _maxPriorityFeePerGas);
 
     return poolId;
   }

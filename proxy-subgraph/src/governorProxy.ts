@@ -47,6 +47,8 @@ export function handleRefundPoolCreated(event: RefundPoolCreated): void {
   pool.governor = getGovernor(event.params.governor).id;
   pool.owner = getAccount(event.params.owner).id;
   pool.balance = event.params.balance;
+  pool.maxFeePerGas = event.params.maxFeePerGas;
+  pool.maxPriorityFeePerGas = event.params.maxPriorityFeePerGas;
   pool.closed = false;
 
   pool.save();

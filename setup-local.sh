@@ -24,7 +24,7 @@ cast send --private-key $PRIV_KEY $GOVERNOR_ADDRESS "propose(address[],uint256[]
 # Advance a block so the test proposal is active
 cast rpc anvil_mine && \
 
-wait-port http://localhost:8000/ && \
+yarn wait-port http://localhost:8000/ && \
 (cd governor-subgraph && yarn run create-local && yarn run deploy-local -l v0.0.1) && \
 (cd proxy-subgraph && yarn run create-local && yarn run deploy-local -l v0.0.1) && \
 # Reattach to docker compose

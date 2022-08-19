@@ -9,7 +9,7 @@ module.exports = {
       name: 'GovernorGasRefundProxy',
       network: 'mainnet',
       source: {
-        address: process.env.GOVERNOR_PROXY_ADDRESS,
+        address: process.env.GOVERNOR_PROXY_ADDRESS || '0xfd3bc22cb0889db8eff357e41908c46a088f3805',
         abi: 'GovernorGasRefundProxy',
         startBlock: process.env.GOVERNOR_PROXY_START_BLOCK
           ? Number.parseInt(process.env.GOVERNOR_PROXY_START_BLOCK)
@@ -28,7 +28,7 @@ module.exports = {
         ],
         eventHandlers: [
           {
-            event: 'RefundPoolCreated(indexed address,indexed uint256,indexed address,uint256)',
+            event: 'RefundPoolCreated(indexed address,indexed uint256,indexed address,uint256,uint256,uint256)',
             handler: 'handleRefundPoolCreated',
           },
           {

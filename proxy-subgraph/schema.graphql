@@ -21,6 +21,8 @@ type RefundPool @entity {
   governor: Governor!
   owner: Account!
   balance: BigInt! # uint256
+  maxFeePerGas: BigInt! # uint256
+  maxPriorityFeePerGas: BigInt! # uint256
   closed: Boolean!
 
   refunds: [Refund!]! @derivedFrom(field: "pool")

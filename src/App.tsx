@@ -19,7 +19,7 @@ function App() {
             <Avatar width="36px" height="36px" src={avatar} />
             <Box flexDirection="column" display="flex">
               <Link fontSize="18px" fontWeight="bold" _hover={{ textDecoration: 'none' }} href="/">
-                Decisions
+                Deimos
               </Link>
               <Text as="span" fontSize="8px">
                 a carlosdp.eth project
