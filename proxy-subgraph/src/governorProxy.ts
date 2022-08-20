@@ -9,10 +9,10 @@ import {
 import { Account, Governor, Proposal, RefundPool, Refund } from '../generated/schema';
 
 function getAccount(address: Address): Account {
-  let account = Account.load(address.toHex());
+  let account = Account.load(address);
 
   if (!account) {
-    account = new Account(address.toHex());
+    account = new Account(address);
     account.save();
   }
 
@@ -32,10 +32,10 @@ function getProposal(proposalId: BigInt): Proposal {
 }
 
 function getGovernor(governorId: Address): Governor {
-  let governor = Governor.load(governorId.toHexString());
+  let governor = Governor.load(governorId);
 
   if (!governor) {
-    governor = new Governor(governorId.toHexString());
+    governor = new Governor(governorId);
     governor.save();
   }
 

@@ -1,12 +1,12 @@
 type Account @entity {
-  id: ID!
+  id: Bytes!
 
   refundPools: [RefundPool!]! @derivedFrom(field: "owner")
   refunds: [Refund!]! @derivedFrom(field: "voter")
 }
 
 type Governor @entity {
-  id: ID!
+  id: Bytes!
 }
 
 type Proposal @entity {

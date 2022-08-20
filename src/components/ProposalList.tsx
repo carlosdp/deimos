@@ -1,7 +1,5 @@
 import { Badge, Box, LinkBox, LinkOverlay, Spinner, Text } from '@chakra-ui/react';
-import { useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { useNavigate } from 'react-router-dom';
 
 import { ProposalStatus, useProposals } from '../hooks';
 import { AvatarAndName } from './AvatarAndName';
@@ -31,18 +29,11 @@ const colorForStatus = (status: ProposalStatus) => {
 
 export type ProposalListProps = {
   governorId: string;
+  onClick: (_proposalId: string) => void;
 };
 
-export const ProposalList = ({ governorId }: ProposalListProps) => {
+export const ProposalList = ({ governorId, onClick }: ProposalListProps) => {
   const { proposals, loading } = useProposals(governorId);
-  const navigate = useNavigate();
-
-  const goToProposal = useCallback(
-    (proposalId: string) => {
-      navigate(`/governors/${governorId}/proposals/${proposalId}`);
-    },
-    [navigate, governorId]
-  );
 
   if (loading) {
     return <Spinner />;
@@ -64,7 +55,7 @@ export const ProposalList = ({ governorId }: ProposalListProps) => {
           borderRadius="4px"
           cursor="pointer"
         >
-          <LinkOverlay onClick={() => goToProposal(proposal.proposalId.toHexString())}>
+          <LinkOverlay onClick={() => onClick(proposal.proposalId.toHexString())}>
             <Box justifyContent="space-between" display="flex">
               <ReactMarkdown>{proposal.description.split('\n')[0]}</ReactMarkdown>
               <Badge alignItems="center" display="flex" colorScheme={colorForStatus(proposal.status)}>

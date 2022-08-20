@@ -1,13 +1,32 @@
-import { Avatar, Box, Text, Link } from '@chakra-ui/react';
+import { Avatar, Box, Text, Link, Center, Spinner } from '@chakra-ui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link as RouterLink } from 'react-router-dom';
 
+import { useGovernors } from './hooks';
 import avatar from './public/avatar.png';
 import { Proposal } from './screens/Proposal';
 import { Proposals } from './screens/Proposals';
 
 function Home() {
-  return <Box width="100%" maxWidth="936px"></Box>;
+  const { loading, governors } = useGovernors();
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  return (
+    <Box width="100%" maxWidth="936px">
+      {governors.map(g => (
+        <Link key={g.id} as={RouterLink} to={`/governors/${g.ensName}`}>
+          {g.displayName}
+        </Link>
+      ))}
+    </Box>
+  );
 }
 
 function App() {

@@ -14,14 +14,14 @@ enum ProposalEventType {
 }
 
 type Account @entity {
-  id: ID!
+  id: Bytes!
 
   proposals: [Proposal!]! @derivedFrom(field: "proposer")
   votes: [Vote!]! @derivedFrom(field: "voter")
 }
 
 type Governor @entity {
-  id: ID!
+  id: Bytes!
 
   quorumNumerator: BigInt # uint256
   timelock: Bytes # address
@@ -34,7 +34,7 @@ type Proposal @entity {
   proposalId: BigInt! # uint256
   governor: Governor!
   proposer: Account! # address
-  targets: [String!]! # address[]
+  targets: [Bytes!]! # address[]
   values: [BigInt!]! # uint256[]
   signatures: [String!]! # string[]
   calldatas: [Bytes!]! # bytes[]

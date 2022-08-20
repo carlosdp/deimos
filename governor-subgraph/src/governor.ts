@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts';
 
 import {
   ProposalCanceled as ProposalCanceledEvent,
@@ -20,10 +20,10 @@ import {
 } from '../generated/schema';
 
 function getAccount(address: Address): Account {
-  let account = Account.load(address.toHex());
+  let account = Account.load(address);
 
   if (!account) {
-    account = new Account(address.toHex());
+    account = new Account(address);
     account.save();
   }
 
@@ -31,10 +31,10 @@ function getAccount(address: Address): Account {
 }
 
 function getGovernor(address: Address): Governor {
-  let governor = Governor.load(address.toHex());
+  let governor = Governor.load(address);
 
   if (!governor) {
-    governor = new Governor(address.toHex());
+    governor = new Governor(address);
     governor.save();
   }
 
@@ -83,7 +83,7 @@ export function handleProposalCreated(event: ProposalCreatedEvent): void {
   proposal.proposalId = event.params.proposalId;
   proposal.governor = getGovernor(event.address).id;
   proposal.proposer = getAccount(event.params.proposer).id;
-  proposal.targets = event.params.targets.map<string>(t => t.toHex());
+  proposal.targets = event.params.targets.map<Bytes>(v => Bytes.fromHexString(v.toHexString()));
   proposal.values = event.params.values;
   proposal.signatures = event.params.signatures;
   proposal.calldatas = event.params.calldatas;

@@ -3,11 +3,12 @@ import { useParams } from 'react-router-dom';
 
 import { ProposalBreadcrumbs } from '../components/ProposalBreadcrumbs';
 import { ProposalDetails } from '../components/ProposalDetails';
-import { useProposal } from '../hooks';
+import { useGovernor, useProposal } from '../hooks';
 
 export function Proposal() {
   const { governorId, id } = useParams<{ governorId: string; id: string }>();
-  const { proposal, loading } = useProposal(`${governorId}:${id}`);
+  const { governor } = useGovernor(governorId!);
+  const { proposal, loading } = useProposal(`${governor?.id}:${id}`);
 
   if (loading || !proposal) {
     return <Spinner />;
