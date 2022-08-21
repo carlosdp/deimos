@@ -25,6 +25,7 @@ type RefundPool @entity {
   maxPriorityFeePerGas: BigInt! # uint256
   closed: Boolean!
 
+  totalAmountRefunded: BigInt!
   refunds: [Refund!]! @derivedFrom(field: "pool")
 }
 

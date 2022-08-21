@@ -49,6 +49,7 @@ export function handleRefundPoolCreated(event: RefundPoolCreated): void {
   pool.balance = event.params.balance;
   pool.maxFeePerGas = event.params.maxFeePerGas;
   pool.maxPriorityFeePerGas = event.params.maxPriorityFeePerGas;
+  pool.totalAmountRefunded = BigInt.zero();
   pool.closed = false;
 
   pool.save();
@@ -85,6 +86,9 @@ export function handleGasRefunded(event: GasRefunded): void {
   if (!pool) {
     throw new Error('RefundPool not found');
   }
+
+  pool.totalAmountRefunded = pool.totalAmountRefunded.plus(event.params.amountRefunded);
+  pool.save();
 
   const refund = new Refund(
     `${event.params.governor.toHexString()}-${event.params.proposalId.toHexString()}-${event.params.voter.toHexString()}`
