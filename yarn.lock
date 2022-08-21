@@ -5201,6 +5201,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"connect-history-api-fallback@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "connect-history-api-fallback@npm:1.6.0"
+  checksum: 804ca2be28c999032ecd37a9f71405e5d7b7a4b3defcebbe41077bb8c5a0a150d7b59f51dcc33b2de30bc7e217a31d10f8cfad27e8e74c2fc7655eeba82d6e7e
+  languageName: node
+  linkType: hard
+
 "console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -5566,6 +5573,7 @@ __metadata:
     prettier: ^2.6.1
     react: ^18.0.0
     react-dom: ^18.0.0
+    react-hook-form: ^7.34.2
     react-markdown: ^8.0.3
     react-router-dom: ^6
     rehype-sanitize: ^5.0.1
@@ -5575,6 +5583,7 @@ __metadata:
     typescript: ^4.6.3
     unified: ^10.1.2
     vite: ^2.9.9
+    vite-plugin-rewrite-all: ^1.0.0
     vitest: ^0.12.9
     wagmi: ^0.4
     wait-port: ^0.3.0
@@ -9625,6 +9634,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:^7.34.2":
+  version: 7.34.2
+  resolution: "react-hook-form@npm:7.34.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 485cde0248e668ad1845b927f9cc05b434c384141bb03bc143a7d7cc937eebf119c935114ccbfa397b463808283dab5b2334022fe5dba975402b201e601d6876
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -11261,6 +11279,17 @@ __metadata:
     unist-util-stringify-position: ^3.0.0
     vfile-message: ^3.0.0
   checksum: 2382edc7c6e3502bca72bc95bc1ff0fe1852482e8a0ac257615f9ab12f32564d6f6a55da8756b74a900d26a247da5ca23a92ca7c9a18dbda2b0f87504ef0611f
+  languageName: node
+  linkType: hard
+
+"vite-plugin-rewrite-all@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "vite-plugin-rewrite-all@npm:1.0.0"
+  dependencies:
+    connect-history-api-fallback: ^1.6.0
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0
+  checksum: 5efb6f0b54452126067619a1a230d2dfc9264d963801159f9050aaf18d9335e600a017b2ce751e98c597535215c4732a79804f0bb664b4aafbaa6283f06b9aee
   languageName: node
   linkType: hard
 

@@ -23,7 +23,7 @@ export function ProposalDetails({ proposal }: ProposalDetailsProps) {
             <Tab>Full Text</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
+            <TabPanel paddingLeft="0">
               <Card minHeight="500px">
                 <ReactMarkdown
                   components={{

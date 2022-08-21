@@ -5,7 +5,10 @@ const PROXY_SUBGRAPH_URL = 'http://localhost:8000/subgraphs/name/governor-proxy'
 
 export type RefundPool = {
   id: string;
+  owner: { id: string };
   balance: ethers.BigNumber;
+  maxFeePerGas: ethers.BigNumber;
+  maxPriorityFeePerGas: ethers.BigNumber;
 };
 
 export const useRefundPools = (governorId: string) => {
@@ -27,7 +30,12 @@ export const useRefundPools = (governorId: string) => {
             query GetRefundPools($governorId: String!) {
               refundPools(where: { governor: $governorId, balance_gt: 0 }, first: 25) {
                 id
+                owner {
+                  id
+                }
                 balance
+                maxFeePerGas
+                maxPriorityFeePerGas
               }
             }
             `,
@@ -44,10 +52,20 @@ export const useRefundPools = (governorId: string) => {
         const resData = await res.json();
 
         setRefundPools(
-          resData.data.refundPools.map((pool: { id: string; balance: string }) => ({
-            id: pool.id,
-            balance: ethers.BigNumber.from(pool.balance),
-          }))
+          resData.data.refundPools.map(
+            (pool: {
+              id: string;
+              owner: { id: string };
+              balance: string;
+              maxFeePerGas: string;
+              maxPriorityFeePerGas: string;
+            }) => ({
+              ...pool,
+              balance: ethers.BigNumber.from(pool.balance),
+              maxFeePerGas: ethers.BigNumber.from(pool.maxFeePerGas),
+              maxPriorityFeePerGas: ethers.BigNumber.from(pool.maxPriorityFeePerGas),
+            })
+          )
         );
       } finally {
         setLoading(false);

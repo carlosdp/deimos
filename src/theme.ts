@@ -59,7 +59,10 @@ export const theme = extendTheme(
     styles: {
       global: {
         body: {
-          background: 'rgb(250, 250, 252)',
+          background: {
+            default: 'rgb(250, 250, 252)',
+            _dark: '#000',
+          },
         },
       },
     },

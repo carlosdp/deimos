@@ -10,6 +10,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverBody,
+  Icon,
 } from '@chakra-ui/react';
 import { faThumbsUp, faThumbsDown, faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +26,7 @@ const RefundExplanationPopover = () => {
   return (
     <Popover>
       <PopoverTrigger>
-        <FontAwesomeIcon icon={faInfoCircle} cursor="pointer" color="rgb(1,1,1,0.2)" />
+        <Icon as={FontAwesomeIcon} color="gray.100" cursor="pointer" icon={faInfoCircle} />
       </PopoverTrigger>
       <PopoverContent
         color="white"

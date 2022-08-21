@@ -29,6 +29,7 @@
     "moment": "^2.29.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.34.2",
     "react-markdown": "^8.0.3",
     "react-router-dom": "^6",
     "rehype-sanitize": "^5.0.1",
@@ -36,6 +37,7 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "unified": "^10.1.2",
+    "vite-plugin-rewrite-all": "^1.0.0",
     "wagmi": "^0.4",
     "wait-port": "^0.3.0"
   },
