@@ -11,6 +11,10 @@ import {
   PopoverCloseButton,
   PopoverBody,
   Icon,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
 } from '@chakra-ui/react';
 import { faThumbsUp, faThumbsDown, faInfoCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +24,6 @@ import { useCallback } from 'react';
 import { ProposalDetails, useSubmitVote, useAvailableVotes } from '../hooks';
 import { voteCountFormatter } from '../utils';
 import { Card } from './Card';
-import { Stat } from './Stat';
 
 const RefundExplanationPopover = () => {
   return (
@@ -79,8 +82,16 @@ export const VotingCard = ({ proposal }: VotingCardProps) => {
   return (
     <Card flexDirection="column" gap="12px" display="flex" alignItems="center">
       <Box alignItems="center" justifyContent="space-around" display="flex" width="100%">
-        <Stat label="For" figure={votesFor} />
-        <Stat label="Against" figure={votesAgainst} />
+        <Stat>
+          <StatLabel>For</StatLabel>
+          <StatNumber>{votesFor}</StatNumber>
+          <StatHelpText>votes</StatHelpText>
+        </Stat>
+        <Stat>
+          <StatLabel>Against</StatLabel>
+          <StatNumber>{votesAgainst}</StatNumber>
+          <StatHelpText>votes</StatHelpText>
+        </Stat>
       </Box>
       <Box flexDirection="column" gap="12px" display="flex">
         <Text fontWeight="bold">Vote</Text>
