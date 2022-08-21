@@ -46,9 +46,11 @@ export const useSubmitVote = (contractId: string, proposalId: string, chainId = 
   // todo: make actually robust
   const viableRefundPool = useAsyncMemo(async () => {
     if (signer) {
+      const gasPrice = await signer.getGasPrice();
       const estimatedCost = await estimateGasForRefundedVote(signer);
       const viablePools = refundPools
         .filter(pool => pool.balance.gte(estimatedCost))
+        .filter(pool => pool.maxFeePerGas.isZero() || pool.maxFeePerGas.gte(gasPrice))
         .sort(_ => (Math.random() < 0.5 ? -1 : 1));
 
       return viablePools[0] ?? null;

@@ -53,7 +53,7 @@ export const CreateGasRefundPoolButton = ({ governorId }: CreateGasRefundPoolBut
   const [creating, setCreating] = useState(false);
   const [created, setCreated] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm<CreatePoolForm>({
-    defaultValues: { value: 0.1, maxFeePerGas: 0, maxPriorityFeePerGas: 1 },
+    defaultValues: { value: 0.1, maxFeePerGas: 0, maxPriorityFeePerGas: 1.5 },
   });
   const { data: account } = useAccount();
   const { data } = useBalance({ addressOrName: account?.address, enabled: !account });
