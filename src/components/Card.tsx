@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '@chakra-ui/react';
 
 export const Card = (props: BoxProps) => {
-  return <Box padding="20px" background="whiteAlpha.100" borderRadius="24px" {...props} />;
+  return <Box padding="20px" background="cardBackground" borderRadius="24px" {...props} />;
 };

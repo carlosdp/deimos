@@ -59,10 +59,7 @@ export const theme = extendTheme(
     styles: {
       global: {
         body: {
-          background: {
-            default: 'rgb(250, 250, 252)',
-            _dark: '#000',
-          },
+          background: 'blackAlpha.50',
         },
       },
     },
@@ -78,6 +75,14 @@ export const theme = extendTheme(
         '700': '#21784E',
         '800': '#165034',
         '900': '#0B281A',
+      },
+    },
+    semanticTokens: {
+      colors: {
+        cardBackground: {
+          default: 'white',
+          _dark: 'whiteAlpha.100',
+        },
       },
     },
     components: {

@@ -50,7 +50,7 @@ export const ProposalList = ({ governorId, onClick }: ProposalListProps) => {
           display="flex"
           padding="16px"
           fontWeight="bold"
-          background="whiteAlpha.100"
+          background="cardBackground"
           borderWidth="1px"
           borderStyle="solid"
           borderColor="blackAlpha.400"
